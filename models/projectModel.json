@@ -1,0 +1,68 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "client_id": 1,
+      "name": "kaiser_digital",
+      "desc": "kaiser digital project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 2,
+      "client_id": 1,
+      "name": "kaiser_backend_node",
+      "desc": "kaiser node.js project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 3,
+      "client_id": 1,
+      "name": "kaiser_backend_java",
+      "desc": "kaiser java project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 4,
+      "client_id": 1,
+      "name": "kaiser_frontend",
+      "desc": "kaiser frontend project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 5,
+      "client_id": 2,
+      "name": "synchrony_backend",
+      "desc": "synchrony backend project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 6,
+      "client_id": 2,
+      "name": "synchrony_frontend",
+      "desc": "synchrony frontend project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 7,
+      "client_id": 3,
+      "name": "shopify_backend",
+      "desc": "shopify backend project",
+      "created_at": "",
+      "updated_at": ""
+    },
+    {
+      "id": 8,
+      "client_id": 3,
+      "name": "shopify_frontend",
+      "desc": "shopify frontend project",
+      "created_at": "",
+      "updated_at": ""
+    }
+  ]
+}

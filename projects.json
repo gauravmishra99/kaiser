@@ -1,0 +1,28 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "client_id": 1,
+            "name": "kaiser_digital",
+            "desc": "kaiser digital project",
+            "created_at": "",
+            "updated_at": ""
+        },
+        {
+            "id": 2,
+            "client_id": 2,
+            "name": "kaiser_backend_node",
+            "desc": "kaiser node.js project",
+            "created_at": "",
+            "updated_at": ""
+        },
+        {
+            "id": 3,
+            "client_id": 3,
+            "name": "kaiser_backend_java",
+            "desc": "kaiser java project",
+            "created_at": "",
+            "updated_at": ""
+        }
+    ]
+}
