@@ -1,6 +1,11 @@
-const app = require('./routes/index.js');
-const port = 3000;
+const Koa = require('koa')
+const unitRouter = require('./routes/unitRoutes.js')
+const bodyParser = require('koa-bodyparser')
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+const app = new Koa();
+
+app.use(bodyParser())
+
+app.use(unitRouter.routes()).use(unitRouter.allowedMethods())
+
+module.exports = app;
