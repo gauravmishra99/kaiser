@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getAllClient} from '../controllers/clientController.js';
+import { getAllClient } from '../controllers/clientController.js';
 
 const router = new Router();
 

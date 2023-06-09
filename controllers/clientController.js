@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import { apiResponse } from '../helper/apiResponse.js';
 
 const getAllClient = async (ctx) => {
+  
   try {
     const jsonString = await fs.readFile('./models/clientModel.json', 'utf-8');
     const client = JSON.parse(jsonString);
