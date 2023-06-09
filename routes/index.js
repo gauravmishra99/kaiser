@@ -1,10 +1,10 @@
-import Koa from 'koa';
-import clientRouter from '../routes/clientRoutes.js';
-import bodyParser from 'koa-bodyparser';
+const Koa = require('koa');
+const clientRouter = require('../routes/clientRoutes.js');
+const bodyParser = require('koa-bodyparser');
 
 const app = new Koa();
 
 app.use(bodyParser());
 app.use(clientRouter.routes()).use(clientRouter.allowedMethods());
 
-export default app;
+module.exports = app;

@@ -1,8 +1,8 @@
-import Router from 'koa-router';
-import { getAllClient } from '../controllers/clientController.js';
+const Router = require('koa-router');
+const clientController = require('../controllers/clientController.js');
 
 const router = new Router();
 
-router.get('/api/clients', getAllClient);
+router.get('/api/clients',clientController. getAllClient);
 
-export default router;
+module.exports = router;
