@@ -1,8 +1,7 @@
-const Koa = require('koa');
-const app = new Koa();
+import app from './routes/index.js';
 
-app.use(async ctx => {
-  ctx.body = 'Hello World';
+const port = 3000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
-
-app.listen(3000);
