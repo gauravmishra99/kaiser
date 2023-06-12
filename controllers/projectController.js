@@ -1,49 +1,57 @@
-const router = require('koa-router');
 const project = require('../models/projectModel.json')
 const fs = require('fs')
 
 
 module.exports.getProject = (ctx) => {
   try {
-    fs.readFile("./models/projectModel.json", "utf8", (err, jsonString) => {
-      const projects = JSON.parse(jsonString);
-      if (err) {
-        console.log("File read failed:", err);
-        return;
-      }
-      console.log("File data:", projects);
-    });
-    ctx.body = { "status": 200, "msg": "get projects is successful" }
+    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let projects = JSON.parse(jsonString);
+    ctx.body = projects;
   }
   catch (e) {
-    ctx.body = { "status": 500, "msg": "error while reading the file" }
+    ctx.status = 500;
+    ctx.body = { "status": 500, "msg": e.message || "error while reading the file" };
   }
-
 }
 
 module.exports.createProject = async (ctx) => {
   try {
-    console.log("request:", ctx.request);
     let requestBody = ctx.request.body;
-    console.log("requestBody", requestBody)
+    let projectName = requestBody["name"];
+    let projectID = requestBody["id"];
+    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let data = JSON.parse(jsonString);
+    let projectData = data.projects;
+    let createdAt = getDateString()
 
-    jsonReader("./models/projectModel.json", (err, data) => {
-      if (err) {
-        console.log(err);
-        return;
+    if(!projectID){
+      let arrValue = (projectData.length) - 1;
+      projectID = (projectData[arrValue].id) + 1;
+      requestBody.id = projectID;
+    }
+
+    projectData.map((pro) => {
+      if (pro.name == projectName) {
+        throw Error("Project already exists");
       }
-      data.projects.push(requestBody)
-      fs.writeFile("./models/projectModel.json", JSON.stringify(data, null, 2), err => {
-        if (err) console.log("Error writing file:", err);
-      });
-
-      console.log("data:",data.projects);
+      else if (pro.id == projectID){
+        throw Error("Project id already exists");
+      }
     });
+
+    requestBody.created_at = createdAt
+    requestBody.updated_at = "" 
+
+    projectData.push(requestBody);
+
+    fs.writeFileSync("./models/projectModel.json", JSON.stringify(data, null, 2));
+
     ctx.body = { "status": 200, "msg": "create project is successful" };
 
   }
   catch (e) {
-    ctx.body = { "status": 500, "msg": "error while creating the project" }
+    ctx.status = 500;
+    ctx.body = { "status": 500, "msg": e.message || "error while creating the project" };
   }
 
 }
@@ -51,44 +59,40 @@ module.exports.createProject = async (ctx) => {
 
 module.exports.updateProject = async (ctx) => {
   try {
-    console.log("request:", ctx.request);
     let requestBody = ctx.request.body;
     let projectId = ctx.params.id;
-    console.log("requestBody:", requestBody, "id:", projectId)
-
-    jsonReader("./models/projectModel.json", (err, data) => {
-      if (err) {
-        console.log(err);
-        return;
+    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let data = JSON.parse(jsonString);
+    let projectData = data.projects;
+    let newArr = [];
+    let updatedAt = getDateString()
+    let value = null;
+    
+    projectData.map((pro) => {
+      if (pro.id == projectId) {
+        value = pro
+        pro.client_id = requestBody["client_id"];
+        pro.name = requestBody["name"];
+        pro.desc = requestBody["desc"];
+        pro.created_at = pro.created_at;
+        pro.updated_at = updatedAt;
       }
-      //data.projects[0].id -= 1;
-      //data.projects.push(requestBody)
-      let value = null;
-      let newArr = []
-      data.projects.map((pro) => {
-        if (pro.id == projectId) {
-          pro = requestBody;
-          console.log("proo", pro);
-          value = pro;
-          //return pro
-        }
-        newArr.push(pro)
-      })
-      console.log("xxx", newArr)
-      let newJson = { "projects": newArr }
-
-      console.log("newJson", newJson)
-
-      fs.writeFile("./models/projectModel.json", JSON.stringify(newJson, null, 2), err => {
-        if (err) console.log("Error writing file:", err);
-      });
-
-      console.log(data.projects);
+      newArr.push(pro);
     });
+
+    if(!value){
+      throw Error("Project id does not exists")
+    }
+
+    let newJson = { "projects": newArr };
+
+    fs.writeFileSync("./models/projectModel.json", JSON.stringify(newJson, null, 2));
+
     ctx.body = { "status": 200, "msg": "update project is successful" };
   }
   catch (e) {
-    ctx.body = { "status": 500, "msg": "error while updating the project" }
+    ctx.status = 500;
+    ctx.body = { "status": 500, "msg": e.message || "error while updating the project" };
   }
 
 }
@@ -96,63 +100,38 @@ module.exports.updateProject = async (ctx) => {
 
 module.exports.deleteProject = async (ctx) => {
   try {
-    console.log("request:", ctx.request);
     let projectId = ctx.params.id;
-    console.log("id:", projectId)
+    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let data = JSON.parse(jsonString);
+    let projectData = data.projects;
+    let newArr = [];
 
-    jsonReader("./models/projectModel.json", (err, data) => {
-      if (err) {
-        console.log(err);
-        return;
+    projectData.map((pro) => {
+      if (pro.id == projectId) {
+        console.log("deleting this value:", pro);
       }
-      //data.projects[0].id -= 1;
-      //data.projects.push(requestBody)
-      let value = null;
-      let newArr = []
-      data.projects.map((pro) => {
-        if (pro.id == projectId) {
-          console.log("deleting this value:", pro);
-          value = pro;
-          //return pro
-        }
-        else {
-          newArr.push(pro)
-        }
-
-      })
-
-      let newJson = { "projects": newArr }
-
-      fs.writeFile("./models/projectModel.json", JSON.stringify(newJson, null, 2), err => {
-        if (err) console.log("Error writing file:", err);
-      });
-
-      console.log(data.projects);
+      else {
+        newArr.push(pro)
+      }
     });
+
+    let newJson = { "projects": newArr };
+
+    fs.writeFileSync("./models/projectModel.json", JSON.stringify(newJson, null, 2));
+
     ctx.body = { "status": 200, "msg": "delete project is successful" };
   }
   catch (e) {
-    ctx.body = { "status": 500, "msg": "error while deleting the project" }
+    ctx.status = 500;
+    ctx.body = { "status": 500, "msg": e.message || "error while deleting the project" };
   }
 
 }
 
 
-
-function jsonReader(filePath, cb) {
-  fs.readFile(filePath, (err, fileData) => {
-    if (err) {
-      return cb && cb(err);
-    }
-    try {
-      const object = JSON.parse(fileData);
-      return cb && cb(null, object);
-    } catch (err) {
-      return cb && cb(err);
-    }
-  });
+function getDateString(){
+  let currentDate = new Date();
+  let options = {timeZone: 'Asia/Kolkata'}
+  let istDate = currentDate.toLocaleString('en-US', options);
+  return istDate
 }
-
-
-
-
