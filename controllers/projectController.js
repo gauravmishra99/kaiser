@@ -30,6 +30,10 @@ module.exports.createProject = async (ctx) => {
       requestBody.id = projectID;
     }
 
+    if(!requestBody.client_id || !requestBody.name || !requestBody.desc){
+       throw Error("missing data")
+    }
+
     projectData.map((pro) => {
       if (pro.name == projectName) {
         throw Error("Project already exists");
@@ -67,6 +71,10 @@ module.exports.updateProject = async (ctx) => {
     let newArr = [];
     let updatedAt = getDateString()
     let value = null;
+
+    if(!requestBody.client_id || !requestBody.name || !requestBody.desc){
+      throw Error("missing data")
+   }
     
     projectData.map((pro) => {
       if (pro.id == projectId) {
