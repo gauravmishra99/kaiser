@@ -35,11 +35,8 @@ module.exports.createProject = async (ctx) => {
     }
 
     projectData.map((pro) => {
-      if (pro.name == projectName) {
+      if (pro.name == projectName || pro.id == projectID) {
         throw Error("Project already exists");
-      }
-      else if (pro.id == projectID){
-        throw Error("Project id already exists");
       }
     });
 
@@ -113,9 +110,11 @@ module.exports.deleteProject = async (ctx) => {
     let data = JSON.parse(jsonString);
     let projectData = data.projects;
     let newArr = [];
+    let value = null;
 
     projectData.map((pro) => {
       if (pro.id == projectId) {
+        value = pro;
         console.log("deleting this value:", pro);
       }
       else {
@@ -123,6 +122,10 @@ module.exports.deleteProject = async (ctx) => {
       }
     });
 
+    if(!value){
+      throw Error("Project id does not exist")
+    }
+    
     let newJson = { "projects": newArr };
 
     fs.writeFileSync("./models/projectModel.json", JSON.stringify(newJson, null, 2));
