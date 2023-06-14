@@ -18,6 +18,11 @@
     "supertest": "^6.3.3"
   },
   "devDependencies": {
+    "@types/koa": "^2.13.6",
+    "@types/koa-bodyparser": "^4.3.10",
+    "@types/koa-json": "^2.0.20",
+    "@types/koa-logger": "^3.1.2",
+    "@types/koa-router": "^7.4.4",
     "@types/node": "^20.3.1",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22",
