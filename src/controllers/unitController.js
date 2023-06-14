@@ -1,9 +1,11 @@
 const crypto = require('crypto')
 const fs = require('fs')
+const unit  = require('../models/unitModel.json')
+import path from 'path'
 
 async function getAllUnits(ctx) {
   try {
-    const jsonString = fs.readFileSync("./models/unitModel.json");
+    const jsonString = fs.readFileSync(path.resolve(__dirname, '../models/unitModel.json'));
     const units = JSON.parse(String(jsonString));
     ctx.body = units;
   } catch (error) {
@@ -15,7 +17,7 @@ async function getAllUnits(ctx) {
 
 async function createUnit(ctx) {
   try {
-    const jsonString = fs.readFileSync("./models/unitModel.json");
+    const jsonString = fs.readFileSync(path.resolve(__dirname, '../models/unitModel.json'));
     const units = JSON.parse(String(jsonString));
     const body = ctx.request.body;
     let unitName = body["name"];
@@ -39,7 +41,7 @@ async function createUnit(ctx) {
 
     units.push(unit);
     try {
-      fs.writeFileSync("./models/unitModel.json", JSON.stringify(units));
+      fs.writeFileSync(path.resolve(__dirname, '../models/unitModel.json'), JSON.stringify(units));
     } catch (error) {
       ctx.status = error.status || 500;
       ctx.body = "Error Writing data in file";
@@ -59,7 +61,7 @@ async function createUnit(ctx) {
 
 async function updateUnit(ctx) {
   try {
-    const jsonString = fs.readFileSync("./models/unitModel.json");
+    const jsonString = fs.readFileSync(path.resolve(__dirname, '../models/unitModel.json'));
     const units = JSON.parse(String(jsonString));
     const body = ctx.request.body;
     let unitID = body["id"];
@@ -72,7 +74,7 @@ async function updateUnit(ctx) {
         unitFound = true;
         units[i]["name"] = newUnitName;
         try {
-          fs.writeFileSync("./models/unitModel.json", JSON.stringify(units));
+          fs.writeFileSync(path.resolve(__dirname, '../models/unitModel.json'), JSON.stringify(units));
         } catch (error) {
           ctx.status = error.status || 500;
           ctx.body = "Error Writing data in file";
@@ -96,7 +98,7 @@ async function updateUnit(ctx) {
 
 async function deleteUnit(ctx) {
   try {
-    const jsonString = fs.readFileSync("./models/unitModel.json");
+    const jsonString = fs.readFileSync(path.resolve(__dirname, '../models/unitModel.json'));
     const units = JSON.parse(String(jsonString));
     const body = ctx.request.body;
     let unitID = body["id"];
@@ -106,7 +108,7 @@ async function deleteUnit(ctx) {
     });
     
     try {
-      fs.writeFileSync("./models/unitModel.json", JSON.stringify(updatedUnits));
+      fs.writeFileSync(path.resolve(__dirname, '../models/unitModel.json'), JSON.stringify(updatedUnits));
     } catch (error) {
         throw Error("Error Writing data in file");
     }

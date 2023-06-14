@@ -1,10 +1,11 @@
 const crypto = require('crypto')
 const fs = require('fs')
-
+const employee = require('../models/employeeModel.json');
+const path = require('path');
 
 const getAllEmployee = async (ctx) => {
     try {
-        const jsonString = fs.readFileSync("./models/employeeModel.json");
+        const jsonString = fs.readFileSync(path.resolve(__dirname, "../models/employeeModel.json"));
         const employees = JSON.parse(String(jsonString));
         ctx.body = employees;
     } catch (error) {
@@ -16,7 +17,7 @@ const getAllEmployee = async (ctx) => {
 
 const createNewEmployee = async (ctx) => {
     try {
-        const jsonString = fs.readFileSync("./models/employeeModel.json");
+        const jsonString = fs.readFileSync(path.resolve(__dirname, "../models/employeeModel.json"));
         const employees = JSON.parse(String(jsonString));
         const body = ctx.request.body;
         let employeeName = body["name"];
@@ -41,7 +42,7 @@ const createNewEmployee = async (ctx) => {
 
         employees.push(employee);
         try {
-            fs.writeFileSync("./models/employeeModel.json", JSON.stringify(employees));
+            fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(employees));
         } catch (error) {
             ctx.status = error.status || 500;
             ctx.body = "Error Writing data in file";
@@ -62,7 +63,7 @@ const createNewEmployee = async (ctx) => {
 
 const updateEmployee = async (ctx) => {
     try {
-        const jsonString = fs.readFileSync("./models/employeeModel.json");
+        const jsonString = fs.readFileSync(path.resolve(__dirname, "../models/employeeModel.json"));
         const employees = JSON.parse(String(jsonString));
         const body = ctx.request.body;
         let empID = body["id"];
@@ -72,7 +73,7 @@ const updateEmployee = async (ctx) => {
             if (element.id === empID) {
                 employees[index]["name"] = newEmployeeName;
                 try {
-                    fs.writeFileSync("./models/employeeModel.json", JSON.stringify(employees));
+                    fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(employees));
                 } catch (error) {
                     ctx.status = error.status || 500;
                     ctx.body = "Error Writing data in file";
@@ -93,7 +94,7 @@ const updateEmployee = async (ctx) => {
 }
 const deleteEmployee = async (ctx) => { 
     try {
-        const jsonString = fs.readFileSync("./models/employeeModel.json");
+        const jsonString = fs.readFileSync(path.resolve(__dirname, "../models/employeeModel.json"));
         const employees = JSON.parse(String(jsonString));
         const body = ctx.request.body;
         let employeesID = body["id"];
@@ -103,7 +104,7 @@ const deleteEmployee = async (ctx) => {
         });
         
         try {
-          fs.writeFileSync("./models/employeeModel.json", JSON.stringify(updatedemployees));
+          fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(updatedemployees));
         } catch (error) {
             throw Error("Error Writing data in file");
         }

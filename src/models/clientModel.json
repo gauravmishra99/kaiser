@@ -1,0 +1,91 @@
+[
+  {
+    "name": "Kaiser Permanente",
+    "id": 1,
+    "uid": 1,
+    "createdDate": "06-06-2023",
+    "createdTime": "10:11 am",
+    "updatedDate": "2023-06-09T08:59:31.609Z",
+    "updatedTime": "2:29:31 pm"
+  },
+  {
+    "name": "Bank of America",
+    "id": 2,
+    "createdDate": "06-06-2023",
+    "createdTime": "11:30 am",
+    "updatedDate": "06-06-2023",
+    "updatedTime": "02:45 pm"
+  },
+  {
+    "name": "CBA",
+    "id": 3,
+    "uid": 2,
+    "createdDate": "06-06-2023",
+    "createdTime": "02:00 pm",
+    "updatedDate": "",
+    "updatedTime": ""
+  },
+  {
+    "name": "AMAT",
+    "id": 4,
+    "uid": 3,
+    "createdDate": "06-06-2023",
+    "createdTime": "04:15 pm",
+    "updatedDate": "06-06-2023",
+    "updatedTime": "05:30 pm"
+  },
+  {
+    "name": "Shell",
+    "id": 5,
+    "uid": 4,
+    "createdDate": "06-06-2023",
+    "createdTime": "06:45 pm",
+    "updatedDate": "",
+    "updatedTime": ""
+  },
+  {
+    "name": "Apple",
+    "id": 6,
+    "uid": 3,
+    "createdDate": "06-06-2023",
+    "createdTime": "08:20 pm",
+    "updatedDate": "06-06-2023",
+    "updatedTime": "09:10 pm"
+  },
+  {
+    "name": "Pwc",
+    "id": 7,
+    "uid": 10,
+    "createdDate": "06-06-2023",
+    "createdTime": "09:50 pm",
+    "updatedDate": "",
+    "updatedTime": ""
+  },
+  {
+    "name": "Canon",
+    "id": 8,
+    "uid": 7,
+    "createdDate": "06-06-2023",
+    "createdTime": "10:30 pm",
+    "updatedDate": "06-06-2023",
+    "updatedTime": "11:15 pm"
+  },
+  {
+    "name": "SSGA",
+    "id": 9,
+    "uid": 7,
+    "createdDate": "06-06-2023",
+    "createdTime": "11:55 pm",
+    "updatedDate": "",
+    "updatedTime": ""
+  },
+  {
+    "name": "NBS",
+    "id": 10,
+    "uid": 9,
+    "createdDate": "06-06-2023",
+    "createdTime": "01:10 am",
+    "updatedDate": "06-06-2023",
+    "updatedTime": "02:25 am"
+  }
+]

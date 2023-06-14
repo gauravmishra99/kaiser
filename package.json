@@ -2,9 +2,9 @@
   "name": "kaiser",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "nodemon server.js",
+    "start:dev": "npx nodemon",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
@@ -18,7 +18,10 @@
     "supertest": "^6.3.3"
   },
   "devDependencies": {
+    "@types/node": "^20.3.1",
     "jest": "^29.5.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
   }
 }

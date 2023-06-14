@@ -1,10 +1,10 @@
+const path = require('path');
 const project = require('../models/projectModel.json')
 const fs = require('fs')
 
-
 module.exports.getProject = (ctx) => {
   try {
-    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
     let projects = JSON.parse(jsonString);
     ctx.body = projects;
   }
@@ -19,7 +19,7 @@ module.exports.createProject = async (ctx) => {
     let requestBody = ctx.request.body;
     let projectName = requestBody["name"];
     let projectID = requestBody["id"];
-    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
     let data = JSON.parse(jsonString);
     let projectData = data.projects;
     let createdAt = getDateString()
@@ -45,7 +45,7 @@ module.exports.createProject = async (ctx) => {
 
     projectData.push(requestBody);
 
-    fs.writeFileSync("./models/projectModel.json", JSON.stringify(data, null, 2));
+    fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(data, null, 2));
 
     ctx.body = { "status": 200, "msg": "create project is successful" };
 
@@ -62,7 +62,7 @@ module.exports.updateProject = async (ctx) => {
   try {
     let requestBody = ctx.request.body;
     let projectId = ctx.params.id;
-    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
     let data = JSON.parse(jsonString);
     let projectData = data.projects;
     let newArr = [];
@@ -91,7 +91,7 @@ module.exports.updateProject = async (ctx) => {
 
     let newJson = { "projects": newArr };
 
-    fs.writeFileSync("./models/projectModel.json", JSON.stringify(newJson, null, 2));
+    fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(newJson, null, 2));
 
     ctx.body = { "status": 200, "msg": "update project is successful" };
   }
@@ -106,7 +106,7 @@ module.exports.updateProject = async (ctx) => {
 module.exports.deleteProject = async (ctx) => {
   try {
     let projectId = ctx.params.id;
-    let jsonString = fs.readFileSync("./models/projectModel.json");
+    let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
     let data = JSON.parse(jsonString);
     let projectData = data.projects;
     let newArr = [];
@@ -128,7 +128,7 @@ module.exports.deleteProject = async (ctx) => {
     
     let newJson = { "projects": newArr };
 
-    fs.writeFileSync("./models/projectModel.json", JSON.stringify(newJson, null, 2));
+    fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(newJson, null, 2));
 
     ctx.body = { "status": 200, "msg": "delete project is successful" };
   }
