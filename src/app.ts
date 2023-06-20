@@ -3,7 +3,7 @@ const cors = require('@koa/cors');
 const unitRouter = require('./routes/unitRoutes.js')
 const employeeRouter = require('./routes/employeeRoutes.js')
 const clientRouter = require('./routes/clientRoutes.js');
-const projectRoute = require('./routes/projectRoutes.js')
+const projectRoute = require('./routes/projectRoutes')
 
 const bodyParser = require('koa-bodyparser')
 

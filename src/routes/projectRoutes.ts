@@ -1,8 +1,8 @@
 const Koa = require('koa');
-const router = require('koa-router');
+const Route = require('koa-router');
 const projectController = require('../controllers/projectController')
 
-const route = new router();
+const route = new Route();
 
 route.post('/projects', projectController.createProject)
 
