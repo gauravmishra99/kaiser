@@ -13,4 +13,18 @@ app.use(clientRouter.routes()).use(clientRouter.allowedMethods());
 
 module.exports = app;
 
+//Typescript
+// import Koa from 'koa';
+// import unitRouter from './routes/unitRoutes';
+// import clientRouter from './routes/clientRoutes';
+// import bodyParser from 'koa-bodyparser';
+
+// const app = new Koa();
+
+// app.use(bodyParser());
+
+// app.use(unitRouter.routes()).use(unitRouter.allowedMethods());
+// app.use(clientRouter.routes()).use(clientRouter.allowedMethods());
+
+// export default app;
 
