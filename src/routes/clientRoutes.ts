@@ -13,15 +13,14 @@
 
 //Typescript
 import Router from 'koa-router';
-import { getAllClient, createClient, updateClient, deleteClient, getClientById } from '../controllers/clientController';
+import { getAllClient } from '../controllers/clientController';
 
-// const router = new Router();
-const router = new Router({ prefix: '/api/client' });
+const router = new Router({ prefix: '/api/clients' });
 
 router.get('/', getAllClient);
-router.post('/api/createClient', createClient);
-router.post('/api/updateClient', updateClient);
-router.post('/api/deleteClient', deleteClient);
-router.get('/api/getClientById/:id', getClientById);
+// router.post('/createClient', createClient);
+// router.post('/updateClient', updateClient);
+// router.post('/deleteClient', deleteClient);
+// router.get('/:id', getClientById);
 
 export default router;

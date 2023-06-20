@@ -161,54 +161,59 @@
 
 //TYPESCRIPT
 import fs from 'fs';
-import { apiResponse } from '../helper/apiResponse';
-import  Context  from 'koa';
+import { NotFoundError, BadRequestError,ServerError } from  '../errors/customeError';
+// import {SuccessResponse } from '../successResponse/apiResponse';
 
-export const getAllClient = async (ctx: Context): Promise<void> => {
+import { apiResponse } from '../successResponse/apiResponse';
+import path from 'path';
+
+// import  Context  from 'koa';
+const filePath = path.join(__dirname, '../models/clientModel.json');
+
+export const getAllClient = async (ctx: any) => {
   try {
     // Read the existing client data from the JSON file
-    const clientJsonData = await fs.promises.readFile('./models/clientModel.json', 'utf-8');
+    const clientJsonData = fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
-    apiResponse(ctx, "Successfully fetched", clientData, 200, false);
+    apiResponse(ctx, "Successfully fetched", clientData, 200);
   } catch (error) {
-    console.log(error);
-    apiResponse(ctx, "Error Occurred", [], 500, true);
+    console.log("catch")
+    throw new NotFoundError("Client not found",200);
   }
 };
 
-export const getClientById = async (ctx: Context): Promise<void> => {
+export const getClientById = async (ctx: any) => {
   try {
-    
-    const { id }= ctx.params;
+    const { id }= ctx.params.id;
 
     // Read the client data from the JSON file
-    const clientJsonData = await fs.promises.readFile('./models/clientModel.json', 'utf-8');
+    const clientJsonData = fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     // Find the client by ID
     const existingClient = clientData.find((client: any) => client.id === parseInt(id));
     if (existingClient) {
-      apiResponse(ctx, 'Client Details', existingClient, 200, false);
+      apiResponse(ctx, 'Client Details', existingClient, 200);
     } else {
-      apiResponse(ctx, 'Client Not Found', [], 200, false);
+      throw new NotFoundError( 'Client Not Found', 200);
     }
   } catch (error) {
     // console.log(error);
-    apiResponse(ctx, 'Error Fetching Client', [], 500, true);
+    apiResponse(ctx, 'Error Fetching Client', [], 500);
   }
 };
 
-export const createClient = async (ctx: Context): Promise<void> => {
+export const createClient = async (ctx: any) => {
   const { name, id, uid } = ctx.request.body;
 
   try {
     // Read existing client data from JSON file
-    const clientJsonData = await fs.promises.readFile('./models/clientModel.json', 'utf-8');
+    const clientJsonData = fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     const existingClient = clientData.find((client: any) => client.id === id || client.name === name);
     if (existingClient) {
-      apiResponse(ctx, "Client with the same ID or Name already exists", [], 200, false);
+      apiResponse(ctx, "Client with the same ID or Name already exists", [], 200);
     } else {
       // Read existing unit data from JSON file
       const unitJsonData = await fs.promises.readFile('./models/unitModel.json', 'utf-8');
@@ -235,18 +240,18 @@ export const createClient = async (ctx: Context): Promise<void> => {
         clientData.push(newClient);
 
         await fs.promises.writeFile('./models/clientModel.json', JSON.stringify(clientData));
-        apiResponse(ctx, "Client created and stored successfully", [], 201, false);
+        apiResponse(ctx, "Client created and stored successfully", [], 201);
       } else {
-        apiResponse(ctx, "Unit doesn't exist!", [], 200, false);
+        apiResponse(ctx, "Unit doesn't exist!", [], 200);
       }
     }
   } catch (error) {
     console.log(error);
-    apiResponse(ctx, 'Error storing clients', [], 500, true);
+    apiResponse(ctx, 'Error storing clients', [], 500);
   }
 };
 
-export const updateClient = async (ctx: Context): Promise<void> => {
+export const updateClient = async (ctx: any): Promise<void> => {
   const { name, id, uid } = ctx.request.body;
 
   try {
@@ -272,17 +277,17 @@ export const updateClient = async (ctx: Context): Promise<void> => {
     if (clientUpdated) {
       // Write the updated client data back to the JSON file
       await fs.promises.writeFile('./models/clientModel.json', JSON.stringify(clientData));
-      apiResponse(ctx, 'Client Updated Successfully', [], 200, false);
+      apiResponse(ctx, 'Client Updated Successfully', [], 200);
     } else {
-      apiResponse(ctx, 'Client Not Found', [], 200, false);
+      apiResponse(ctx, 'Client Not Found', [], 200);
     }
   } catch (error) {
     console.log(error);
-    apiResponse(ctx, 'Error Updating Client', [], 500, true);
+    apiResponse(ctx, 'Error Updating Client', [], 500);
   }
 };
 
-export const deleteClient = async (ctx: Context): Promise<void> => {
+export const deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
 
@@ -305,12 +310,12 @@ export const deleteClient = async (ctx: Context): Promise<void> => {
     if (existingClient) {
       // Write the updated client data back to the JSON file
       await fs.promises.writeFile('./models/clientModel.json', JSON.stringify(clientData));
-      apiResponse(ctx, 'Client Deleted Successfully', [], 200, false);
+      apiResponse(ctx, 'Client Deleted Successfully', [], 200);
     } else {
-      apiResponse(ctx, 'Client Not Found', [], 200, false);
+      apiResponse(ctx, 'Client Not Found', [], 200);
     }
   } catch (error) {
     console.log(error);
-    apiResponse(ctx, 'Error Deleting Client', [], 500, true);
+    apiResponse(ctx, 'Error Deleting Client', [], 500,);
   }
 };
