@@ -8,5 +8,6 @@ router.get('/api/unit/:id', unitController.getUnitById)
 router.post('/api/unit/create', unitController.createUnit)
 router.post('/api/unit/update', unitController.updateUnit)
 router.post('/api/unit/delete', unitController.deleteUnit)
+router.post('/api/unit-data', unitController.getData)
 
 module.exports = router

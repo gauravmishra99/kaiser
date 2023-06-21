@@ -23,7 +23,6 @@ async function getAllUnits(ctx: Context) {
 async function getUnitById(ctx: Context) {
   try {
     const { id } = ctx.params;
-    console.log(id)
     const jsonString = fs.readFileSync(
       path.resolve(__dirname, "../models/unitModel.json")
     );
@@ -60,13 +59,16 @@ async function createUnit(ctx: Context) {
       }
     }
 
+    // 
+    let id = units[units.length - 1]['id'];
+
     const date = new Date();
     let time = date.toLocaleTimeString();
 
     // add unit name
     let unit = {
       name: unitName,
-      id: crypto.randomUUID(),
+      id: id+1,
       createdDate: date.toISOString(),
       createdTime: time,
       updatedDate: date.toISOString(),
@@ -171,10 +173,28 @@ async function deleteUnit(ctx: Context) {
   }
 }
 
+async function getData(ctx : Context){
+  const jsonString = fs.readFileSync(
+    path.resolve(__dirname, "../models/unitModel.json")
+  );
+  const units = JSON.parse(String(jsonString));
+
+  const body : any = ctx.request.body
+  let key = body['key']
+
+  let data:Array<any> = [];
+  units.map((unit:any)=>{
+    data.push(unit[key])
+  })
+
+  apiResponse(ctx, "Unit Data", data, 200, false)
+}
+
 module.exports = {
   getAllUnits,
   getUnitById,
   createUnit,
   updateUnit,
   deleteUnit,
+  getData
 };
