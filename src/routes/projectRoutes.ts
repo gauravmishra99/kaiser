@@ -1,18 +1,18 @@
 const Koa = require('koa');
-const Route = require('koa-router');
+const ProjectRouter = require('koa-router');
 const projectController = require('../controllers/projectController')
 
-const route = new Route();
+const ProjectRoute = new ProjectRouter();
 
-route.get('/projects', projectController.getAllProject)
+ProjectRoute.get('/projects', projectController.getAllProject)
 
-route.get('/projects/:id', projectController.getProject)
+ProjectRoute.get('/projects/:id', projectController.getProject)
 
-route.post('/projects', projectController.createProject)
+ProjectRoute.post('/projects', projectController.createProject)
 
-route.put('/projects/:id', projectController.updateProject)
+ProjectRoute.put('/projects/:id', projectController.updateProject)
 
-route.delete('/projects/:id', projectController.deleteProject)
+ProjectRoute.delete('/projects/:id', projectController.deleteProject)
 
-module.exports = route;
+module.exports = ProjectRoute;
 
