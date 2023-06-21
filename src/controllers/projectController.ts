@@ -101,6 +101,9 @@ module.exports.updateProject = async (ctx : Context) => {
     
     projectData.map((pro : any) => {
       if (pro.id == projectId) {
+        if (pro.name == requestBody.name ) {
+          throw Error("Project name already exists");
+        }
         value = pro
         pro.client_id = requestBody["client_id"];
         pro.name = requestBody["name"];
