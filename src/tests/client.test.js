@@ -30,6 +30,7 @@ describe('CRUD operations', () => {
     });
   });
 
+  
   describe('get client by id', () => {
     test('should fetch a client by ID successfully', async () => {
       const mockReadFileSync = jest.spyOn(fs, 'readFileSync');

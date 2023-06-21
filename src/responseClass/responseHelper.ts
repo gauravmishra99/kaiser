@@ -1,5 +1,6 @@
 import { Context } from 'koa';
 
+
 class ApiResponse<T> {
   constructor(public message: string, public data: T, public statusCode: number, public isError: boolean) { }
 }

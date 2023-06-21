@@ -1,6 +1,5 @@
 const KoaRouter = require('koa-router')
 const clientController = require('../controllers/clientController.ts');
-
 const route = new KoaRouter()
 
 route.get('/api/clients', clientController.getAllClient);

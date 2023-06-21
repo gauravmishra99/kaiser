@@ -120,6 +120,7 @@ exports.updateClient = async (ctx: any): Promise<void> => {
   }
 };
 
+
 exports.deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
