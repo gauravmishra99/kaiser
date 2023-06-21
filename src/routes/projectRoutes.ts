@@ -4,9 +4,11 @@ const projectController = require('../controllers/projectController')
 
 const route = new Route();
 
-route.post('/projects', projectController.createProject)
+route.get('/projects', projectController.getAllProject)
 
-route.get('/projects', projectController.getProject)
+route.get('/projects/:id', projectController.getProject)
+
+route.post('/projects', projectController.createProject)
 
 route.put('/projects/:id', projectController.updateProject)
 
