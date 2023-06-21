@@ -67,16 +67,17 @@ exports.createClient = async (ctx: any) => {
         // Auto-increment the client id
         const lastItem = clientData[clientData.length - 1];
         const lastId = lastItem ? lastItem.id + 1 : 1;
-        const currentDate = new Date();
+        const currentDate:Date = new Date();
+        const date=dateForm(currentDate)
         const currentTime = new Date().toLocaleTimeString();
-
+        
         const newClient = {
           name: name,
           id: lastId,
           uid: UID,
-          createdDateTime: currentDate.toISOString(),
+          createdDate: date,
           createdTime: currentTime,
-          updatedDate: currentDate.toISOString(),
+          updatedDate: date,
           updatedTime: currentTime,
         };
         // Add the new client to the existing data
@@ -97,25 +98,27 @@ exports.createClient = async (ctx: any) => {
 };
 
 exports.updateClient = async (ctx: any): Promise<void> => {
-  const { name, id} = ctx.request.body;
-
+  const { name, id,uid} = ctx.request.body;
+console.log( name, id,uid)
   try {
     const ID = parseInt(id);
-
+    const uID=parseInt(uid)
     if(name && ID ){
     // Read existing Client data from JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     let clientUpdated = false;
-    const currentDate = new Date();
+    const currentDate:Date = new Date();
+    const date=dateForm(currentDate)
     const currentTime = new Date().toLocaleTimeString();
     // Loop through the client array
     for (let i = 0; i < clientData.length; i++) {
       if (clientData[i].id === ID) {
         // Update the client data
         clientData[i].name = name;
-        clientData[i].updatedDate = currentDate.toISOString();
+        clientData[i].uid = uID;
+        clientData[i].updatedDate = date;
         clientData[i].updatedTime = currentTime;
         clientUpdated = true;
         break;
@@ -172,3 +175,19 @@ exports.deleteClient = async (ctx: any): Promise<void> => {
     apiResponse(ctx, "Something went wront !", 500, true);
   }
 };
+const dateForm = (dt: Date): string => {
+  const date = new Date(dt).toLocaleString('en-US', { timeZone: 'Asia/Calcutta' });
+  let dtSplit = date.split(',');
+  dtSplit = dtSplit[0].split('/');
+  const dt1 = prependOneZero(Number(dtSplit[1]));
+  const dt0 = prependOneZero(Number(dtSplit[0]));
+  const formattedDate = `${dtSplit[2]}-${dt0}-${dt1}`;
+  return formattedDate;
+}
+
+const prependOneZero = (number: number): string => {
+  if (number < 10)
+    return "0" + number;
+  else
+    return number.toString();
+}
