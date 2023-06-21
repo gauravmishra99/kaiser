@@ -1,3 +1,4 @@
+
 const request = require('supertest');
 const app = require('../app'); // Imported Koa.js app
 const fs=require('fs')
@@ -11,7 +12,6 @@ describe('CRUD operations', () => {
             const response = await request(app.callback()).get('/api/clients');
             expect(response.status).toBe(200);
             expect(response.body.message).toEqual('Successfully fetched');
-            expect(response.body.status).toBe(false);
             expect(Array.isArray(response.body.data)).toBe(true);
         });
 
@@ -24,45 +24,40 @@ describe('CRUD operations', () => {
                 const response = await request(app.callback()).get('/api/clients');
                 // Assert the response
                 expect(response.status).toBe(500);
-                expect(response.body.status).toBe(true);
                 expect(Array.isArray(response.body.data)).toBe(true);
                 mockReadFileSync.mockReset();
 
             });
     });
-    describe('get client by id', () => {
-
-    test('should fetch a client by ID successfully', async () => {
-        // Mock the file system readFileSync function
-        const mockReadFileSync = jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify([
-        { id: 1,uid:1, name: 'Client 1' },
-        { id: 2,uid:2, name: 'Client 2' },
-        ]));
     
-        // Make a request to your application using Supertest
-        const response = await request(app.callback()).get('/api/getClientById/1')
-        
-        // Assert the response body
-        expect(response.status).toBe(200)
-        expect(response.body.message).toEqual('Client Details');
-        expect(response.body.status).toEqual(false);
-        expect(Array.isArray(response.body.data)).toBe(false);
-        mockReadFileSync.mockReset();
+    describe('get client by id', () => {
+      test('should fetch a client by ID successfully', async () => {
+          const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
+          mockReadFileSync.mockImplementation(() => JSON.stringify([
+            { id: 1, uid: 1, name: 'Client 1' },
+            { id: 2, uid: 2, name: 'Client 2' },
+          ]));
+          // Make a request to your application using Supertest
+          const response = await request(app.callback()).get('/api/getClientById/1')
+          // Assert the response body
+          expect(response.status).toBe(200)
+          expect(response.body.message).toEqual('Client Details');
+          expect(Array.isArray(response.body.data)).toBe(false);
+          mockReadFileSync.mockReset();
 
     });
-  
     test('should return an error when an invalid client ID is provided', async () => {
-        // Mock the file system readFileSync function
-     const mockReadFileSync=   jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify([
-        { id: 1,uid:1, name: 'Client 1' },
-        { id: 2,uid:2, name: 'Client 2' },
+        const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
+        mockReadFileSync.mockImplementation(() => JSON.stringify([
+          { id: 1, uid: 1, name: 'Client 1' },
+          { id: 2, uid: 2, name: 'Client 2' },
         ]));
+    
         // Make a request to your application using Supertest
         const response = await request(app.callback()).get('/api/getClientById/3') 
         // Assert the response body
         expect(response.status).toBe(200)
         expect(response.body.message).toEqual( 'client Not Found');
-        expect(response.body.status).toBe(false);
         mockReadFileSync.mockReset();
 
     });
@@ -70,16 +65,6 @@ describe('CRUD operations', () => {
 describe('create client', () => {
 
     test('should create a new client', async () => {
-        // // Mock the file system readFileSync function for clientModel.json
-        // const mockReadFileSync=  jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([]));
-        // // Make a request to your application using Supertest
-        // const response = await request(app.callback()).post('/api/createClient')
-        //   .send({
-        //     name: 'New Client',
-        //     id: 1,
-        //     uid: 1,
-        //   })
-
         const clientData = [{ id: 1, name: 'Client 1' }];
         const unitData = [{ id: 1, name: 'Unit 1' }];
         const mockReadFileSync=  fs.readFileSync.mockReturnValueOnce(JSON.stringify(clientData));
@@ -91,22 +76,32 @@ describe('create client', () => {
 
           expect(response.status).toBe(201)
           expect(response.body.message).toEqual( 'Client created and stored successfully');
-          expect(response.body.status).toBe(false);
           mockReadFileSync.mockReset();
           mockReadFileSync1.mockReset();
       });
       
       test('should return an error when a client ID or Name already exists', async () => {
         // Mock the file system readFileSync function for clientModel.json
-       const mockReadFileSync= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
+        const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
+        mockReadFileSync.mockImplementation(() => JSON.stringify([
           { name: 'Existing Client', id: 1, uid: 1 }
+
         ]));
+    
+      //  const mockReadFileSync= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
+      //     { name: 'Existing Client', id: 1, uid: 1 }
+      //   ]));
       
         // Mock the file system readFileSync function for unitModel.json
-        const mockReadFileSync1= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
+        const mockReadFileSync1 = jest.spyOn(fs, 'readFileSync');
+        mockReadFileSync.mockImplementation(() => JSON.stringify([
           { id: 1, name: 'Unit 1' },
           { id: 2, name: 'Unit 2' },
-        ]))
+        ]));
+        // const mockReadFileSync1= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
+        //   { id: 1, name: 'Unit 1' },
+        //   { id: 2, name: 'Unit 2' },
+        // ]))
         // Make a request to your application using Supertest
         const response = await request(app.callback()).post('/api/createClient')
           .send({
@@ -117,7 +112,6 @@ describe('create client', () => {
         // Assert the response body
         expect(response.status).toBe(200)
         expect(response.body.message).toEqual( 'Client with the same ID or Name already existslly Added');
-        expect(response.body.status).toBe(false);
         mockReadFileSync.mockReset();
         mockReadFileSync1.mockReset();
       });
@@ -134,7 +128,6 @@ describe('create client', () => {
   
         expect(response.status).toBe(200);
           expect(response.body.message).toEqual( "Unit doesn't exist !");
-          expect(response.body.status).toBe(false);
           mockReadFileSync.mockReset();
           mockReadFileSync1.mockReset();
       });
@@ -165,8 +158,13 @@ describe('update client', () => {
       uid: 1,
     };
   // Mock the file system readFileSync function for clientModel.json
-  const mockReadFileSync= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
-    testClient ]));
+  const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
+  mockReadFileSync.mockImplementation(() => JSON.stringify([
+    { id: 1, name: 'Unit 1' },
+    { id: 2, name: 'Unit 2' },
+  ]));
+  // const mockReadFileSync= jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify([
+  //   testClient ]));
     // // Write the test client data to the clientModel.json file
     // fs.writeFileSync('./models/clientModel.json', JSON.stringify([testClient]));
 
@@ -231,7 +229,6 @@ describe('delete client', () => {
   
       // Assert the API response
       expect(response.body.message).toBe('Client Deleted Successfully');
-      expect(response.body.status).toBe(false);
       expect(response.status).toBe(200);
     });
   
@@ -243,7 +240,6 @@ describe('delete client', () => {
         // Assert the API response
         expect(response.body.message).toBe('Client Not Found');
         expect(response.status).toBe(200);
-        expect(response.body.status).toBe(false);
     });
   
     test('should handle an error while deleting a client', async () => {

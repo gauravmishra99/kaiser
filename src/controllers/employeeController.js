@@ -9,9 +9,8 @@ const getAllEmployee = async (ctx) => {
         const employees = JSON.parse(String(jsonString));
         ctx.body = employees;
     } catch (error) {
-        ctx.status = error.status || 500;
-        ctx.body = "Error Reading file";
-        ctx.app.emit("error", error, ctx);
+        ctx.status = 500;
+        ctx.body = { "status": 500, "msg": error.message || "error while reading the file" };
     }
 }
 
@@ -44,19 +43,14 @@ const createNewEmployee = async (ctx) => {
         try {
             fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(employees));
         } catch (error) {
-            ctx.status = error.status || 500;
-            ctx.body = "Error Writing data in file";
-            ctx.app.emit("error", error, ctx);
+            ctx.status = 500;
+            ctx.body = { "status": 500, "msg": error.message || "Error Writing data in file" };
         }
-
-        ctx.status = 201;
-        ctx.body = "Data inserted successfully";
+        ctx.status = 200;
+        ctx.body = { "status": 200, "msg": "employee created successfully" };
     } catch (error) {
-        ctx.status = error.status || 500;
-        let response = {
-            "message": error.message || "File read failed"
-        }
-        ctx.body = response;
+        ctx.status = 500;
+        ctx.body = { "status": 500, "msg": error.message || "error while creating the employee" };
     }
 
 }
@@ -75,45 +69,41 @@ const updateEmployee = async (ctx) => {
                 try {
                     fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(employees));
                 } catch (error) {
-                    ctx.status = error.status || 500;
-                    ctx.body = "Error Writing data in file";
-                    ctx.app.emit("error", error, ctx);
+                    ctx.status = 500;
+                    ctx.body = { "status": 500, "msg": error.message || "Error Writing data in file" };
                 }
             }
         });
         ctx.status = 200;
-        ctx.body = "Data Updated successfully";
+        ctx.body = { "status": 200, "msg": "employee Updated successfully" };
     } catch (error) {
-        let response = {
-            "message": error.message || "File read failed"
-        }
-        ctx.status = error.status || 500;
-        ctx.body = response;
+        ctx.status = 500;
+        ctx.body = { "status": 500, "msg": error.message || "error while Updating the employee" };
     }
 
 }
-const deleteEmployee = async (ctx) => { 
+const deleteEmployee = async (ctx) => {
     try {
         const jsonString = fs.readFileSync(path.resolve(__dirname, "../models/employeeModel.json"));
         const employees = JSON.parse(String(jsonString));
         const body = ctx.request.body;
         let employeesID = body["id"];
-    
+
         let updatedemployees = employees.filter((employee) => {
-          return employee["id"] !== employeesID;
+            return employee["id"] !== employeesID;
         });
-        
+
         try {
-          fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(updatedemployees));
+            fs.writeFileSync(path.resolve(__dirname, "../models/employeeModel.json"), JSON.stringify(updatedemployees));
         } catch (error) {
             throw Error("Error Writing data in file");
         }
         ctx.status = 200;
-        ctx.body = "Data Updated successfully";
-      } catch (error) {
-        ctx.status = error.status || 500;
-        ctx.body = error.message || "File read failed";
-      }
+        ctx.body = { "status": 200, "msg": "employee deleted successfully" };
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = { "status": 500, "msg": error.message || "Error Writing data in file" };
+    }
 }
 
 module.exports = { getAllEmployee, createNewEmployee, updateEmployee, deleteEmployee };
