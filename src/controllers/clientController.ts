@@ -141,7 +141,6 @@ exports.deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
     const clientID=parseInt(id)
-    console.log(id)
     if(clientID){
     // Read the existing client data from the JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
