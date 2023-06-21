@@ -40,15 +40,16 @@ exports.getClientById = async (ctx: any) => {
 };
 
 exports.createClient = async (ctx: any) => {
-  const { name, id, uid } = ctx.request.body;
+  const { name,id, uid } = ctx.request.body;
   try {
+    if( name && uid){
     // Read existing client data from JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     const existingClient = clientData.find((client: { id: number; name: string }) => client.id === id || client.name === name);
     if (existingClient) {
-      apiResponse(ctx, 'Client with the same ID or Name already exists', [], 200);
+      apiResponse(ctx, 'Client with the same ID or Name already exists', [], 200,false);
 
     } else {
       // Read existing unit data from JSON file unitfilePath
@@ -81,8 +82,11 @@ exports.createClient = async (ctx: any) => {
         apiResponse(ctx, "Unit doesn't exist!", [], 200, false);
       }
     }
+  }else{
+    apiResponse(ctx, 'Please provide all inputs', [], 200,false);
+  }
   } catch (error) {
-    apiResponse(ctx, "Something went wront !", 500, true);
+    apiResponse(ctx, "Something went wront !",[], 500, true);
   }
 };
 
