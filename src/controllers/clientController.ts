@@ -158,7 +158,6 @@ exports.deleteClient = async (ctx: any): Promise<void> => {
         break;
       }
     }
-    
     if (existingClient) {
       // Write the updated client data back to the JSON file
       await fs.writeFileSync(filePath, JSON.stringify(clientData));
