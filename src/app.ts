@@ -10,7 +10,6 @@ const bodyParser = require('koa-bodyparser')
 
 const app = new Koa();
 app.use(cors());
-
 app.use(bodyParser({ enableTypes: ['json', 'text'] }));
 
 app.use(unitRouter.routes()).use(unitRouter.allowedMethods())
