@@ -1,25 +1,27 @@
-//TYPESCRIPT
-import fs from 'fs';
-import { successResponse, errorResponse } from  '../responseClass/responseHelper';
-import path from 'path';
-import { Context } from 'koa';
-
+// //TYPESCRIPT
+// import fs from 'fs';
+// import { successResponse, errorResponse } from  '../responseClass/responseHelper';
+// import path from 'path';
+// import { Context } from 'koa';
+const fs = require("fs");
+const { apiResponse } = require("../helper/apiResponse");
+const path = require("path");
 
 const filePath = path.join(__dirname, '../models/clientModel.json');
 const unitfilePath = path.join(__dirname, '../models/unitModel.json');
 
-export const getAllClient = async (ctx: Context) => {
+export const getAllClient = async (ctx: any) => {
   try {
     // Read the existing client data from the JSON file
     const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
-    successResponse(ctx, "Successfully fetched", clientData, 200);
+    apiResponse(ctx, "Successfully fetched", clientData, 200,false);
   } catch (error) {
-    errorResponse(ctx, "Client not found", 500);
+    apiResponse(ctx, "Client not found",[], 500,true);
     }
 };
 
-export const getClientById = async (ctx: Context) => {
+export const getClientById = async (ctx: any) => {
   try {
     const { id }= ctx.params;
     // Read the client data from the JSON file
@@ -28,12 +30,12 @@ export const getClientById = async (ctx: Context) => {
     // Find the client by ID
     const existingClient = clientData.find((client: { id: number }) => client.id === parseInt(id));
     if (existingClient) {
-      successResponse(ctx, 'Client Details', existingClient, 200);
+      apiResponse(ctx, 'Client Details', existingClient, 200,false);
     } else {
-      successResponse(ctx, 'Client ID does not Exist', [], 200);
+      apiResponse(ctx, 'Client ID does not Exist', [], 200,false);
     }
   } catch (error) {
-    errorResponse(ctx, "Something went wront !", 500);
+    apiResponse(ctx, "Something went wront !",[], 500,true);
     }
 };
 
@@ -46,7 +48,7 @@ export const createClient = async (ctx: any) => {
 
     const existingClient = clientData.find((client: { id: number; name: string }) => client.id === id || client.name === name);
     if (existingClient) {
-      successResponse(ctx, 'Client with the same ID or Name already exists', [], 200);
+      apiResponse(ctx, 'Client with the same ID or Name already exists', [], 200);
 
     } else {
       // Read existing unit data from JSON file unitfilePath
@@ -74,13 +76,13 @@ export const createClient = async (ctx: any) => {
         clientData.push(newClient);
         
         await fs.writeFileSync(filePath, JSON.stringify(clientData));
-        successResponse(ctx, "Client created and stored successfully", [], 201);
+        apiResponse(ctx, "Client created and stored successfully", [], 201,false);
       } else {
-        successResponse(ctx, "Unit doesn't exist!", [], 200);
+        apiResponse(ctx, "Unit doesn't exist!", [], 200,false);
       }
     }
   } catch (error) {
- errorResponse(ctx, "Something went wront !", 500);
+ apiResponse(ctx, "Something went wront !", 500,true);
   }
 };
 
@@ -109,12 +111,12 @@ export const updateClient = async (ctx: any): Promise<void> => {
     if (clientUpdated) {
       // Write the updated client data back to the JSON file
       await fs.writeFileSync(filePath, JSON.stringify(clientData));
-      successResponse(ctx, 'Client Updated Successfully', [], 200);
+      apiResponse(ctx, 'Client Updated Successfully', [], 200);
     } else {
-      successResponse(ctx, 'Client Not Found', [], 200);
+      apiResponse(ctx, 'Client Not Found', [], 200,false);
     }
   } catch (error) {
-    errorResponse(ctx, "Something went wront !", 500);
+    apiResponse(ctx, "Something went wront !", 500,true);
     }
 };
 
@@ -139,11 +141,11 @@ export const deleteClient = async (ctx: any): Promise<void> => {
     if (existingClient) {
       // Write the updated client data back to the JSON file
       await fs.writeFileSync(filePath, JSON.stringify(clientData));
-      successResponse(ctx, 'Client Deleted Successfully', [], 200);
+      apiResponse(ctx, 'Client Deleted Successfully', [], 200,false);
     } else {
-      successResponse(ctx, 'Client Not Found', [], 200);
+      apiResponse(ctx, 'Client Not Found', [], 200,false);
     }
   } catch (error) {
-    errorResponse(ctx, "Something went wront !", 500);
+    apiResponse(ctx, "Something went wront !", 500,true);
   }
 };

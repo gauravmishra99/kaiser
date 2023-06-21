@@ -1,7 +1,7 @@
-import * as fs from 'fs';
-import request from 'supertest';
-import app from '../app'; // Assuming the Koa.js application is exported from 'app.ts'
 
+const request = require('supertest');
+const app = require('../app'); // Imported Koa.js app
+const fs=require('fs')
 describe('CRUD operations', () => {
     afterEach(() => {
         jest.clearAllMocks();
@@ -32,11 +32,6 @@ describe('CRUD operations', () => {
     
     describe('get client by id', () => {
       test('should fetch a client by ID successfully', async () => {
-          // Mock the file system readFileSync function
-          // const mockReadFileSync = jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify([
-          // { id: 1,uid:1, name: 'Client 1' },
-          // { id: 2,uid:2, name: 'Client 2' },
-          // ]))
           const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
           mockReadFileSync.mockImplementation(() => JSON.stringify([
             { id: 1, uid: 1, name: 'Client 1' },
@@ -52,12 +47,6 @@ describe('CRUD operations', () => {
 
     });
     test('should return an error when an invalid client ID is provided', async () => {
-        // Mock the file system readFileSync function
-    //  const mockReadFileSync=   jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify([
-    //     { id: 1,uid:1, name: 'Client 1' },
-    //     { id: 2,uid:2, name: 'Client 2' },
-    //     ]));
-
         const mockReadFileSync = jest.spyOn(fs, 'readFileSync');
         mockReadFileSync.mockImplementation(() => JSON.stringify([
           { id: 1, uid: 1, name: 'Client 1' },

@@ -1,14 +1,12 @@
+const KoaRouter = require('koa-router')
+const  clientController= require('../controllers/clientController.ts');
 
-//Typescript
-import Router from 'koa-router';
-import { getAllClient,getClientById,createClient ,updateClient,deleteClient} from '../controllers/clientController';
+const route= new KoaRouter()
 
-const router = new Router({ prefix: '/api/clients' });
+route.get('/api/clients',clientController.getAllClient);
+route.post('/api/createClient',clientController.createClient);
+route.post('/api/updateClient',clientController.updateClient);
+route.post('/api/deleteClient',clientController.deleteClient);
+route.get('/api/clients/:id',clientController.getClientById);
 
-router.get('/', getAllClient);
-router.post('/createClient', createClient);
-router.post('/updateClient', updateClient);
-router.post('/deleteClient', deleteClient);
-router.get('/:id', getClientById);
-
-export default router;
+module.exports = route;
