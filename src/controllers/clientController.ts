@@ -10,40 +10,40 @@ const path = require("path");
 const filePath = path.join(__dirname, '../models/clientModel.json');
 const unitfilePath = path.join(__dirname, '../models/unitModel.json');
 
-exports.getAllClient  = async (ctx: any) => {
+exports.getAllClient = async (ctx: any) => {
   try {
     // Read the existing client data from the JSON file
-    const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
+    const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
-    apiResponse(ctx, "Successfully fetched", clientData, 200,false);
+    apiResponse(ctx, "Successfully fetched", clientData, 200, false);
   } catch (error) {
-    apiResponse(ctx, "Client not found",[], 500,true);
-    }
+    apiResponse(ctx, "Client not found", [], 500, true);
+  }
 };
 
-exports. getClientById = async (ctx: any) => {
+exports.getClientById = async (ctx: any) => {
   try {
-    const { id }= ctx.params;
+    const { id } = ctx.params;
     // Read the client data from the JSON file
-    const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
+    const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
     // Find the client by ID
     const existingClient = clientData.find((client: { id: number }) => client.id === parseInt(id));
     if (existingClient) {
-      apiResponse(ctx, 'Client Details', existingClient, 200,false);
+      apiResponse(ctx, 'Client Details', existingClient, 200, false);
     } else {
-      apiResponse(ctx, 'Client ID does not Exist', [], 200,false);
+      apiResponse(ctx, 'Client ID does not Exist', [], 200, false);
     }
   } catch (error) {
-    apiResponse(ctx, "Something went wront !",[], 500,true);
-    }
+    apiResponse(ctx, "Something went wront !", [], 500, true);
+  }
 };
 
 exports.createClient = async (ctx: any) => {
   const { name, id, uid } = ctx.request.body;
   try {
     // Read existing client data from JSON file
-    const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
+    const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     const existingClient = clientData.find((client: { id: number; name: string }) => client.id === id || client.name === name);
@@ -52,8 +52,8 @@ exports.createClient = async (ctx: any) => {
 
     } else {
       // Read existing unit data from JSON file unitfilePath
-    const unitJsonData =await fs.readFileSync(unitfilePath, 'utf-8');
-    const unitData = JSON.parse(unitJsonData);
+      const unitJsonData = await fs.readFileSync(unitfilePath, 'utf-8');
+      const unitData = JSON.parse(unitJsonData);
       // Check if unit id exists or not
       const existingUnit = unitData.find((unit: { id: number }) => unit.id === uid);
       if (existingUnit) {
@@ -74,28 +74,28 @@ exports.createClient = async (ctx: any) => {
         };
         // Add the new client to the existing data
         clientData.push(newClient);
-        
+
         await fs.writeFileSync(filePath, JSON.stringify(clientData));
-        apiResponse(ctx, "Client created and stored successfully", [], 201,false);
+        apiResponse(ctx, "Client created and stored successfully", [], 201, false);
       } else {
-        apiResponse(ctx, "Unit doesn't exist!", [], 200,false);
+        apiResponse(ctx, "Unit doesn't exist!", [], 200, false);
       }
     }
   } catch (error) {
- apiResponse(ctx, "Something went wront !", 500,true);
+    apiResponse(ctx, "Something went wront !", 500, true);
   }
 };
 
-exports. updateClient = async (ctx: any): Promise<void> => {
+exports.updateClient = async (ctx: any): Promise<void> => {
   const { name, id, uid } = ctx.request.body;
 
   try {
     // Read existing Client data from JSON file
-    const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
+    const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
 
     let clientUpdated = false;
-    const currentDate = new Date();  
+    const currentDate = new Date();
     const currentTime = new Date().toLocaleTimeString();
     // Loop through the client array
     for (let i = 0; i < clientData.length; i++) {
@@ -113,18 +113,18 @@ exports. updateClient = async (ctx: any): Promise<void> => {
       await fs.writeFileSync(filePath, JSON.stringify(clientData));
       apiResponse(ctx, 'Client Updated Successfully', [], 200);
     } else {
-      apiResponse(ctx, 'Client Not Found', [], 200,false);
+      apiResponse(ctx, 'Client Not Found', [], 200, false);
     }
   } catch (error) {
-    apiResponse(ctx, "Something went wront !", 500,true);
-    }
+    apiResponse(ctx, "Something went wront !", 500, true);
+  }
 };
 
 exports.deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
     // Read the existing client data from the JSON file
-    const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
+    const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     // const clientJsonData = await fs.readFileSync('./models/clientModel.json', 'utf-8');
     let clientData = JSON.parse(clientJsonData);
     let existingClient = false;
@@ -141,11 +141,11 @@ exports.deleteClient = async (ctx: any): Promise<void> => {
     if (existingClient) {
       // Write the updated client data back to the JSON file
       await fs.writeFileSync(filePath, JSON.stringify(clientData));
-      apiResponse(ctx, 'Client Deleted Successfully', [], 200,false);
+      apiResponse(ctx, 'Client Deleted Successfully', [], 200, false);
     } else {
-      apiResponse(ctx, 'Client Not Found', [], 200,false);
+      apiResponse(ctx, 'Client Not Found', [], 200, false);
     }
   } catch (error) {
-    apiResponse(ctx, "Something went wront !", 500,true);
+    apiResponse(ctx, "Something went wront !", 500, true);
   }
 };

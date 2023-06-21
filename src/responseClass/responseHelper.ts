@@ -1,7 +1,7 @@
 import { Context } from 'koa';
 
 class ApiResponse<T> {
-  constructor(public message: string, public data: T, public statusCode: number, public isError: boolean) {}
+  constructor(public message: string, public data: T, public statusCode: number, public isError: boolean) { }
 }
 
 export function successResponse<T>(ctx: Context, message: string, data: T, statusCode = 200) {
