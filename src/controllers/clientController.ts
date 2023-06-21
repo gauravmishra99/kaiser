@@ -10,7 +10,7 @@ const path = require("path");
 const filePath = path.join(__dirname, '../models/clientModel.json');
 const unitfilePath = path.join(__dirname, '../models/unitModel.json');
 
-export const getAllClient = async (ctx: any) => {
+exports.getAllClient  = async (ctx: any) => {
   try {
     // Read the existing client data from the JSON file
     const clientJsonData =await fs.readFileSync(filePath, 'utf-8');
@@ -21,7 +21,7 @@ export const getAllClient = async (ctx: any) => {
     }
 };
 
-export const getClientById = async (ctx: any) => {
+exports. getClientById = async (ctx: any) => {
   try {
     const { id }= ctx.params;
     // Read the client data from the JSON file
@@ -39,7 +39,7 @@ export const getClientById = async (ctx: any) => {
     }
 };
 
-export const createClient = async (ctx: any) => {
+exports.createClient = async (ctx: any) => {
   const { name, id, uid } = ctx.request.body;
   try {
     // Read existing client data from JSON file
@@ -86,7 +86,7 @@ export const createClient = async (ctx: any) => {
   }
 };
 
-export const updateClient = async (ctx: any): Promise<void> => {
+exports. updateClient = async (ctx: any): Promise<void> => {
   const { name, id, uid } = ctx.request.body;
 
   try {
@@ -120,7 +120,7 @@ export const updateClient = async (ctx: any): Promise<void> => {
     }
 };
 
-export const deleteClient = async (ctx: any): Promise<void> => {
+exports.deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
     // Read the existing client data from the JSON file
