@@ -24,6 +24,8 @@ exports.getAllClient = async (ctx: any) => {
 exports.getClientById = async (ctx: any) => {
   try {
     const { id } = ctx.params;
+    const clientId=parseInt(ctx.params.id)
+    if(clientId){
     // Read the client data from the JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
@@ -34,6 +36,9 @@ exports.getClientById = async (ctx: any) => {
     } else {
       apiResponse(ctx, 'Client ID does not Exist', [], 200, false);
     }
+  }else{
+    apiResponse(ctx, 'Plese provide Client ID', [], 200, false);
+  }
   } catch (error) {
     apiResponse(ctx, "Something went wront !", [], 500, true);
   }
@@ -42,7 +47,8 @@ exports.getClientById = async (ctx: any) => {
 exports.createClient = async (ctx: any) => {
   const { name,id, uid } = ctx.request.body;
   try {
-    if( name && uid){
+    const UID = parseInt(uid);
+    if( name && UID){
     // Read existing client data from JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
@@ -56,7 +62,7 @@ exports.createClient = async (ctx: any) => {
       const unitJsonData = await fs.readFileSync(unitfilePath, 'utf-8');
       const unitData = JSON.parse(unitJsonData);
       // Check if unit id exists or not
-      const existingUnit = unitData.find((unit: { id: number }) => unit.id === uid);
+      const existingUnit = unitData.find((unit: { id: number }) => unit.id === UID);
       if (existingUnit) {
         // Auto-increment the client id
         const lastItem = clientData[clientData.length - 1];
@@ -67,7 +73,7 @@ exports.createClient = async (ctx: any) => {
         const newClient = {
           name: name,
           id: lastId,
-          uid: uid,
+          uid: UID,
           createdDateTime: currentDate.toISOString(),
           createdTime: currentTime,
           updatedDate: currentDate.toISOString(),
@@ -91,9 +97,12 @@ exports.createClient = async (ctx: any) => {
 };
 
 exports.updateClient = async (ctx: any): Promise<void> => {
-  const { name, id, uid } = ctx.request.body;
+  const { name, id} = ctx.request.body;
 
   try {
+    const ID = parseInt(id);
+
+    if(name && ID ){
     // Read existing Client data from JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     const clientData = JSON.parse(clientJsonData);
@@ -103,7 +112,7 @@ exports.updateClient = async (ctx: any): Promise<void> => {
     const currentTime = new Date().toLocaleTimeString();
     // Loop through the client array
     for (let i = 0; i < clientData.length; i++) {
-      if (clientData[i].id === id) {
+      if (clientData[i].id === ID) {
         // Update the client data
         clientData[i].name = name;
         clientData[i].updatedDate = currentDate.toISOString();
@@ -119,6 +128,9 @@ exports.updateClient = async (ctx: any): Promise<void> => {
     } else {
       apiResponse(ctx, 'Client Not Found', [], 200, false);
     }
+  }else{
+    apiResponse(ctx, 'Please provide all inputs', [], 200,false);
+  }
   } catch (error) {
     apiResponse(ctx, "Something went wront !", 500, true);
   }
@@ -128,6 +140,9 @@ exports.updateClient = async (ctx: any): Promise<void> => {
 exports.deleteClient = async (ctx: any): Promise<void> => {
   try {
     const { id } = ctx.request.body;
+    const clientID=parseInt(id)
+    console.log(id)
+    if(clientID){
     // Read the existing client data from the JSON file
     const clientJsonData = await fs.readFileSync(filePath, 'utf-8');
     // const clientJsonData = await fs.readFileSync('./models/clientModel.json', 'utf-8');
@@ -150,6 +165,10 @@ exports.deleteClient = async (ctx: any): Promise<void> => {
     } else {
       apiResponse(ctx, 'Client Not Found', [], 200, false);
     }
+  }else{
+    apiResponse(ctx, "Please provide the client ID", 500, true);
+
+  }
   } catch (error) {
     apiResponse(ctx, "Something went wront !", 500, true);
   }
