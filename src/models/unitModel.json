@@ -2,23 +2,23 @@
   {
     "name": "Healthcare",
     "id": 1,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "11:30 am",
-    "updatedDate": "06-06-2023",
-    "updatedTime": "02:45 pm"
+    "updatedDate": "2023-06-23T07:56:10.805Z",
+    "updatedTime": "1:26:10 pm"
   },
   {
     "name": "Education",
     "id": 2,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "11:30 am",
-    "updatedDate": "06-06-2023",
+    "updatedDate": "2023-06-11T07:52:43.928Z",
     "updatedTime": "02:45 pm"
   },
   {
     "name": "Technology",
     "id": 3,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "02:00 pm",
     "updatedDate": "",
     "updatedTime": ""
@@ -26,15 +26,15 @@
   {
     "name": "Finance",
     "id": 4,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "04:15 pm",
-    "updatedDate": "06-06-2023",
+    "updatedDate": "2023-06-09T07:52:43.928Z",
     "updatedTime": "05:30 pm"
   },
   {
     "name": "Transportation",
     "id": 5,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "06:45 pm",
     "updatedDate": "",
     "updatedTime": ""
@@ -42,7 +42,7 @@
   {
     "name": "Hospitality",
     "id": 6,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "08:20 pm",
     "updatedDate": "06-06-2023",
     "updatedTime": "09:10 pm"
@@ -50,7 +50,7 @@
   {
     "name": "Entertainment",
     "id": 7,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "09:50 pm",
     "updatedDate": "",
     "updatedTime": ""
@@ -58,15 +58,15 @@
   {
     "name": "Retail",
     "id": 8,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "10:30 pm",
-    "updatedDate": "06-06-2023",
+    "updatedDate": "2023-06-12T07:52:43.928Z",
     "updatedTime": "11:15 pm"
   },
   {
     "name": "Energy",
     "id": 9,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "11:55 pm",
     "updatedDate": "",
     "updatedTime": ""
@@ -74,9 +74,9 @@
   {
     "name": "Construction",
     "id": 10,
-    "createdDate": "06-06-2023",
+    "createdDate": "2023-06-06T07:52:43.928Z",
     "createdTime": "01:10 am",
-    "updatedDate": "06-06-2023",
+    "updatedDate": "2023-06-07T07:52:43.928Z",
     "updatedTime": "02:25 am"
   },
   {
