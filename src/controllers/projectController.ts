@@ -73,7 +73,7 @@ module.exports.createProject = async (ctx : Context) => {
 
     fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(data, null, 2));
 
-    ctx.body = { "status": 200, "msg": "create project is successful" };
+    ctx.body = { "status": 200, "msg": "create project is successful", "createdData":requestBody };
 
   }
   catch (e : any) {
@@ -100,10 +100,10 @@ module.exports.updateProject = async (ctx : Context) => {
    }
     
     projectData.map((pro : any) => {
-      if (pro.id == projectId) {
-        if (pro.name == requestBody.name ) {
-          throw Error("Project name already exists");
-        }
+      if (pro.name == requestBody.name && pro.id != projectId ) {
+        throw Error("Project name already exists");
+      }
+      else if (pro.id == projectId) {
         value = pro
         pro.client_id = requestBody["client_id"];
         pro.name = requestBody["name"];
@@ -122,7 +122,7 @@ module.exports.updateProject = async (ctx : Context) => {
 
     fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(newJson, null, 2));
 
-    ctx.body = { "status": 200, "msg": "update project is successful" };
+    ctx.body = { "status": 200, "msg": "update project is successful", "updatedData":value };
   }
   catch (e : any) {
     ctx.status = 500;
