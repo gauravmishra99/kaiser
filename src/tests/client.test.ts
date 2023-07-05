@@ -9,7 +9,8 @@ describe('CRUD operations', () => {
 
   describe('get client', () => {
     test('should fetch all clients successfully', async () => {
-      const response = await request(app.callback()).get('/api/clients');
+      const response = await request(app.callback())
+      .get('/api/clients');
       expect(response.status).toBe(200);
       expect(response.body.message).toEqual('Successfully fetched');
       expect(Array.isArray(response.body.data)).toBe(true);
@@ -19,7 +20,7 @@ describe('CRUD operations', () => {
       // Mock the API call to throw an error
       const mockReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {
         throw new Error('Error occurred');
-      });
+      });  
       // Perform the GET request to your app's endpoint
       const response = await request(app.callback()).get('/api/clients');
       // Assert the response

@@ -1,7 +1,9 @@
-const KoaRouter = require('koa-router')
-const clientController = require('../controllers/clientController.ts');
-const route = new KoaRouter()
+import KoaRouter from 'koa-router';
+import * as clientController from '../controllers/clientController';
 
+const route = new KoaRouter();
+
+// Define your routes using the `route` instance
 route.get('/api/clients', clientController.getAllClient);
 route.post('/api/createClient', clientController.createClient);
 route.post('/api/updateClient', clientController.updateClient);
