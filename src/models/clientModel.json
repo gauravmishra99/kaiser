@@ -1,12 +1,10 @@
 [
     {
-        "name": "Bank of America",
-        "id": 2,
+        "name": "Bank of America","id": 2,
         "createdDate": "06-06-2023",
         "createdTime": "11:30 am",
         "updatedDate": "06-06-2023",
-        "updatedTime": "02:45 pm"
-    },
+        "updatedTime": "02:45 pm"},
     {
         "name": "CBA",
         "id": 3,

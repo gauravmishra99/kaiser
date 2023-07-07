@@ -3,9 +3,9 @@ const cors = require('@koa/cors');
 const unitRouter = require('./routes/unitRoutes.ts')
 const employeeRouter = require('./routes/employeeRoutes.js')
 const clientRouter = require('./routes/clientRoutes.ts');
-const projectRoute = require('./routes/projectRoutes.js')
+const projectRoute = require('./routes/projectRoutes')
 const bodyParser = require('koa-bodyparser')
-// const apiResponse=require('./helper/apiResponse')
+import {apiResponse} from './helper/apiResponse';
 const app = new Koa();
 
 app.use(cors());
@@ -16,13 +16,13 @@ async function errorMiddleware(ctx: any, next: any) {
   try {
     await next();
   } catch (error: any) {
-    // apiResponse( ctx.response, error.message,[],error.status,true)  
-    ctx.response.status = error.status;
-    ctx.response.body = {
-      message: error.message,
-      status: true,
-      data: []
-    };
+    apiResponse( ctx.response, error.message,[],error.status,true)  
+    // ctx.response.status = error.status;
+    // ctx.response.body = {
+    //   message: error.message,
+    //   status: true,
+    //   data: []
+    // };
   }
 }
 

@@ -1,26 +1,52 @@
-const path = require('path');
 const project = require('../models/projectModel.json')
-const fs = require('fs')
+import fs from "fs";
+import { Context, Request } from "koa";
+import path from "path";
 
-module.exports.getProject = (ctx) => {
+module.exports.getAllProject = (ctx : Context) => {
   try {
     let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
-    let projects = JSON.parse(jsonString);
+    let projects = JSON.parse(String(jsonString));
     ctx.body = projects;
   }
-  catch (e) {
+  catch (e : any) {
     ctx.status = 500;
     ctx.body = { "status": 500, "msg": e.message || "error while reading the file" };
   }
 }
 
-module.exports.createProject = async (ctx) => {
+module.exports.getProject = (ctx : Context) => {
   try {
-    let requestBody = ctx.request.body;
+    let projectId = ctx.params.id;
+    let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
+    let data = JSON.parse(String(jsonString));
+    let projectData = data.projects;
+    let value = null;
+
+    projectData.map((pro : any) => {
+      if (pro.id == projectId) {
+        value = pro;
+        ctx.body = value;
+      }
+    });
+
+    if(!value){
+      throw Error("Project id does not exists")
+    }
+  }
+  catch (e : any) {
+    ctx.status = 500;
+    ctx.body = { "status": 500, "msg": e.message || "error while reading the file" };
+  }
+}
+
+module.exports.createProject = async (ctx : Context) => {
+  try {
+    let requestBody : any = ctx.request.body;
     let projectName = requestBody["name"];
     let projectID = requestBody["id"];
     let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
-    let data = JSON.parse(jsonString);
+    let data = JSON.parse(String(jsonString));
     let projectData = data.projects;
     let createdAt = getDateString()
 
@@ -34,7 +60,7 @@ module.exports.createProject = async (ctx) => {
        throw Error("missing data")
     }
 
-    projectData.map((pro) => {
+    projectData.map((pro : any) => {
       if (pro.name == projectName || pro.id == projectID) {
         throw Error("Project already exists");
       }
@@ -47,10 +73,10 @@ module.exports.createProject = async (ctx) => {
 
     fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(data, null, 2));
 
-    ctx.body = { "status": 200, "msg": "create project is successful" };
+    ctx.body = { "status": 200, "msg": "create project is successful", "createdData":requestBody };
 
   }
-  catch (e) {
+  catch (e : any) {
     ctx.status = 500;
     ctx.body = { "status": 500, "msg": e.message || "error while creating the project" };
   }
@@ -58,14 +84,14 @@ module.exports.createProject = async (ctx) => {
 }
 
 
-module.exports.updateProject = async (ctx) => {
+module.exports.updateProject = async (ctx : Context) => {
   try {
-    let requestBody = ctx.request.body;
+    let requestBody : any = ctx.request.body;
     let projectId = ctx.params.id;
     let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
-    let data = JSON.parse(jsonString);
+    let data = JSON.parse(String(jsonString));
     let projectData = data.projects;
-    let newArr = [];
+    let newArr : any = [];
     let updatedAt = getDateString()
     let value = null;
 
@@ -73,8 +99,11 @@ module.exports.updateProject = async (ctx) => {
       throw Error("missing data")
    }
     
-    projectData.map((pro) => {
-      if (pro.id == projectId) {
+    projectData.map((pro : any) => {
+      if (pro.name == requestBody.name && pro.id != projectId ) {
+        throw Error("Project name already exists");
+      }
+      else if (pro.id == projectId) {
         value = pro
         pro.client_id = requestBody["client_id"];
         pro.name = requestBody["name"];
@@ -93,9 +122,9 @@ module.exports.updateProject = async (ctx) => {
 
     fs.writeFileSync(path.resolve(__dirname, "../models/projectModel.json"), JSON.stringify(newJson, null, 2));
 
-    ctx.body = { "status": 200, "msg": "update project is successful" };
+    ctx.body = { "status": 200, "msg": "update project is successful", "updatedData":value };
   }
-  catch (e) {
+  catch (e : any) {
     ctx.status = 500;
     ctx.body = { "status": 500, "msg": e.message || "error while updating the project" };
   }
@@ -103,16 +132,16 @@ module.exports.updateProject = async (ctx) => {
 }
 
 
-module.exports.deleteProject = async (ctx) => {
+module.exports.deleteProject = async (ctx : Context) => {
   try {
     let projectId = ctx.params.id;
     let jsonString = fs.readFileSync(path.resolve(__dirname, "../models/projectModel.json"));
-    let data = JSON.parse(jsonString);
+    let data = JSON.parse(String(jsonString));
     let projectData = data.projects;
-    let newArr = [];
+    let newArr : any = [];
     let value = null;
 
-    projectData.map((pro) => {
+    projectData.map((pro : any) => {
       if (pro.id == projectId) {
         value = pro;
         console.log("deleting this value:", pro);
@@ -132,7 +161,7 @@ module.exports.deleteProject = async (ctx) => {
 
     ctx.body = { "status": 200, "msg": "delete project is successful" };
   }
-  catch (e) {
+  catch (e : any) {
     ctx.status = 500;
     ctx.body = { "status": 500, "msg": e.message || "error while deleting the project" };
   }

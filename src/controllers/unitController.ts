@@ -111,6 +111,11 @@ async function updateUnit(ctx: Context) {
     let unitFound = false;
     // check if unit name exists
     for (let i = 0; i < units.length; i++) {
+      if(units[i]["name"] === newUnitName && units[i]["id"] != unitID){
+        throw Error("A unit with given name already exists!")
+      }
+
+
       if (units[i]["id"] === unitID) {
         unitFound = true;
         const date = new Date();
@@ -118,19 +123,20 @@ async function updateUnit(ctx: Context) {
         units[i]["name"] = newUnitName;
         units[i]["updatedDate"] = date.toISOString();
         units[i]["updatedTime"] = time;
-        try {
-          fs.writeFileSync(
-            path.resolve(__dirname, "../models/unitModel.json"),
-            JSON.stringify(units)
-          );
-        } catch (error: any) {
-          ctx.status = error.status || 500;
-          ctx.body = "Error Writing data in file";
-          ctx.app.emit("error", error, ctx);
-        }
-        break;
       }
     }
+
+    try {
+      fs.writeFileSync(
+        path.resolve(__dirname, "../models/unitModel.json"),
+        JSON.stringify(units)
+      );
+    } catch (error: any) {
+      ctx.status = error.status || 500;
+      ctx.body = "Error Writing data in file";
+      ctx.app.emit("error", error, ctx);
+    }
+
     if (!unitFound) throw Error("No such unit found");
 
     ctx.status = 201;
